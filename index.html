@@ -3,67 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Universal Dependencyの世界へ</title>
+    <title>Universal Dependencyの世界へ - UD入門</title>
     <style>
-        /* Google Fontsの読み込み */
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap');
+        /* Google Fonts & System Fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&family=Noto+Sans+JP:wght@400;500;700;900&display=swap');
         
-        /* 基本スタイル */
         :root {
-            --primary-color: #3b82f6; /* blue-500 */
-            --secondary-color: #8b5cf6; /* violet-500 */
-            --text-dark: #1e293b; /* slate-800 */
-            --text-light: #475569; /* slate-600 */
-            --bg-light: #f8fafc; /* slate-50 */
-            --bg-white: #ffffff;
-            --border-color: #e2e8f0; /* slate-200 */
+            --font-primary: "Inter", "Noto Sans JP", sans-serif;
+            --color-primary: #3b82f6;
+            --color-secondary: #8b5cf6;
+            --color-accent: #f59e0b;
+            --color-success: #10b981;
+            --color-danger: #ef4444;
+            --color-text-primary: #1e293b;
+            --color-text-secondary: #475569;
+            --color-bg: #f8fafc;
+            --color-bg-card: #ffffff;
+            --color-border: #e2e8f0;
         }
         
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
         html, body {
             width: 100%;
             height: 100%;
             overflow: hidden;
-            font-family: 'Noto Sans JP', sans-serif;
-            background: var(--text-dark);
+            font-family: var(--font-primary);
+            background: var(--color-bg);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
-        /* スライドの基本設定 */
         .slide {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: var(--bg-white);
-            padding: 50px 70px;
+            background: var(--color-bg);
+            padding: 60px 80px;
             overflow-y: auto;
-            color: var(--text-dark);
+            color: var(--color-text-primary);
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1), transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
             transform: translateX(100%);
         }
         
-        .slide.active {
-            opacity: 1;
-            visibility: visible;
-            z-index: 1;
-            transform: translateX(0);
-        }
+        .slide.active { opacity: 1; visibility: visible; z-index: 1; transform: translateX(0); }
+        .slide.prev-slide { transform: translateX(-100%); }
 
-        .slide.prev-slide {
-            transform: translateX(-100%);
-        }
-
-        /* タイトルスライドのスタイル */
         .title-slide {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             display: flex;
             flex-direction: column;
@@ -73,491 +64,534 @@
         }
         
         .title-slide h1 {
-            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-size: clamp(3rem, 6vw, 5rem);
             font-weight: 900;
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            letter-spacing: -0.02em;
             color: white;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-        
-        /* 見出しスタイル */
-        h1, h2, h3 {
-            font-weight: 700;
+        .title-slide .subtitle {
+            font-size: clamp(1.25rem, 2vw, 1.75rem);
+            font-weight: 400;
+            color: rgba(255,255,255,0.95);
+            max-width: 700px;
+            margin-top: 1.5rem;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-        h1 { font-size: 2.8rem; margin-bottom: 2rem; color: var(--text-dark); }
-        h2 { font-size: 2.2rem; margin-bottom: 1.5rem; color: var(--text-dark); border-bottom: 4px solid var(--primary-color); padding-bottom: 0.5rem; }
-        h3 { font-size: 1.6rem; margin-bottom: 1rem; color: var(--text-light); }
-        
-        p, li {
+        .title-slide .author-info {
+            margin-top: 3rem;
             font-size: 1.2rem;
-            line-height: 1.8;
-            margin-bottom: 1rem;
-            color: var(--text-light);
+            color: rgba(255,255,255,0.85);
         }
         
-        ol, ul {
-            padding-left: 2rem;
-        }
+        h1, h2, h3 { font-weight: 900; letter-spacing: -0.01em; }
+        h2 { font-size: 2.5rem; margin-bottom: 2rem; border-bottom: 3px solid var(--color-primary); padding-bottom: 1rem; }
+        h3 { font-size: 1.8rem; margin-bottom: 1.5rem; font-weight: 700; color: var(--color-text-primary); }
         
-        /* コンポーネント */
+        p, li { font-size: 1.25rem; line-height: 1.8; color: var(--color-text-secondary); margin-bottom: 1rem; }
+        
         .card {
-            background: var(--bg-light);
-            border-left: 5px solid var(--primary-color);
-            padding: 1.5rem;
-            border-radius: 0 8px 8px 0;
+            background: var(--color-bg-card);
+            padding: 2rem;
+            border-radius: 20px;
             margin: 2rem 0;
+            border: 1px solid var(--color-border);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.07);
         }
         
         .highlight-card {
-             background: #fffbeb; /* amber-50 */
-             border-left: 5px solid #f59e0b; /* amber-500 */
-             padding: 1.5rem;
-             border-radius: 0 8px 8px 0;
-             margin: 2rem 0;
-        }
-        .highlight-card .highlight {
-            background: #fef3c7; /* amber-100 */
-            padding: 2px 8px;
-            border-radius: 4px;
-            font-weight: 700;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-left: 5px solid var(--color-accent);
+            padding: 2rem;
+            border-radius: 20px;
+            margin: 2rem 0;
         }
         
-        /* 統語樹のコンテナ */
         .tree-container {
-            background: var(--bg-white);
-            border: 1px solid var(--border-color);
-            padding: 1.5rem;
-            border-radius: 12px;
+            background: var(--color-bg-card);
+            padding: 2rem;
+            border-radius: 20px;
             margin: 1rem 0;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid var(--color-border);
         }
         
-        .tree-container h3 {
-             border-bottom: 2px solid var(--border-color);
-             padding-bottom: 0.5rem;
-        }
-        
-        /* 統語樹SVGのスタイル */
         svg.dependency-tree {
             width: 100%;
             max-width: 900px;
             display: block;
             margin: 1.5rem auto;
-            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            font-family: var(--font-primary);
         }
-        .dep-word { font-size: 1.1rem; font-weight: bold; }
-        .dep-pos { font-size: 0.8rem; fill: #64748b; }
-        .dep-label { font-size: 0.8rem; font-weight: 500; }
-        .dep-arrow { stroke-width: 2; fill: none; }
+        .dep-word { font-size: 1.2rem; font-weight: 700; fill: var(--color-text-primary); }
+        .dep-pos { font-size: 0.85rem; fill: #64748b; }
+        .dep-arrow { stroke-width: 2.5; fill: none; }
+        .dep-label { font-size: 0.9rem; font-weight: 700; }
         
-        /* ナビゲーションUI */
-        .navigation-controls {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            z-index: 10;
-            display: flex;
-            gap: 1rem;
-        }
-        
-        .gemini-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: linear-gradient(135deg, #fb923c, #f59e0b);
-            color: white;
-            padding: 0.75rem 1.5rem;
-            border-radius: 99px;
-            font-weight: bold;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(249, 115, 22, 0.3);
-        }
-        .gemini-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(249, 115, 22, 0.4);
-        }
-         .gemini-button:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-            transform: translateY(0);
-            box-shadow: none;
-        }
+        .dep-nsubj { stroke: var(--color-primary); } .dep-nsubj-label { fill: var(--color-primary); }
+        .dep-obj { stroke: var(--color-success); } .dep-obj-label { fill: var(--color-success); }
+        .dep-iobj { stroke: var(--color-secondary); } .dep-iobj-label { fill: var(--color-secondary); }
+        .dep-mod { stroke: var(--color-accent); } .dep-mod-label { fill: var(--color-accent); }
+        .dep-case { stroke: #94a3b8; } .dep-case-label { fill: #94a3b8; }
 
+        .navigation-controls { display: flex; position: fixed; bottom: 30px; right: 30px; z-index: 10; gap: 1rem; }
         .nav-button {
-            width: 50px;
-            height: 50px;
+            width: 55px; height: 55px; border-radius: 50%;
             border: none;
-            border-radius: 50%;
-            background: var(--primary-color);
-            color: white;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: white;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            color: var(--color-text-secondary);
+            font-size: 1.5rem; cursor: pointer;
+            transition: all 0.2s ease;
         }
-        .nav-button:hover {
-            background: #2563eb; /* blue-600 */
-            transform: translateY(-3px);
+        .nav-button:hover { transform: translateY(-3px) scale(1.05); box-shadow: 0 8px 25px rgba(0,0,0,0.2); }
+        .nav-button:disabled { opacity: 0.5; transform: scale(1); cursor: not-allowed; box-shadow: 0 5px 20px rgba(0,0,0,0.15); }
+
+        .gemini-button {
+            display: inline-flex; align-items: center; gap: 0.75rem;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            color: white; padding: 0.8rem 1.6rem;
+            border-radius: 99px; font-weight: 700; font-size: 1rem;
+            border: none; cursor: pointer; transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
         }
-        .nav-button:disabled {
-            background: #94a3b8; /* slate-400 */
-            cursor: not-allowed;
-            transform: translateY(0);
-        }
+        .gemini-button:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(102, 126, 234, 0.5); }
+        .gemini-button:disabled { background: #9ca3af; color: #e5e7eb; cursor: not-allowed; transform: none; box-shadow: none; }
         
-        /* UIオーバーレイ */
         .ui-overlay {
-            position: fixed;
-            z-index: 5;
-            color: #9ca3af; /* gray-400 */
-            background: rgba(255,255,255,0.7);
-            padding: 0.5rem 1rem;
-            border-radius: 99px;
-            backdrop-filter: blur(5px);
+            position: fixed; z-index: 5; color: #6b7280;
+            background: rgba(255,255,255,0.8); padding: 0.5rem 1rem;
+            border-radius: 99px; backdrop-filter: blur(10px);
+            border: 1px solid var(--color-border);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
+        #slide-counter { top: 30px; right: 30px; }
+        #progress-bar { bottom: 0; left: 0; width: 100%; height: 8px; background: transparent; z-index: 11;}
+        #progress-fill { height: 100%; background: linear-gradient(90deg, var(--color-primary), var(--color-secondary)); width: 0%; transition: width 0.3s ease;}
         
-        #slide-counter { top: 25px; right: 25px; }
-        #progress-bar { bottom: 0; left: 0; width: 100%; height: 6px; background: #e5e7eb; /* gray-200 */ z-index: 11;}
-        #progress-fill { height: 100%; background: var(--primary-color); transition: width 0.3s ease; width: 0%; }
-        
+        table.styled-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+        }
+        .styled-table th, .styled-table td {
+            border: 1px solid var(--color-border);
+            padding: 12px 15px;
+            text-align: left;
+        }
+        .styled-table th {
+            background-color: var(--color-bg);
+            font-weight: 700;
+        }
+        .styled-table tr:nth-of-type(even) {
+            background-color: #fcfcfd;
+        }
+        code {
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+            background: #eef2ff;
+            color: #4338ca;
+            padding: 0.2em 0.4em;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        pre code {
+            display: block;
+            padding: 1rem;
+            border-radius: 8px;
+            background: var(--color-text-primary);
+            color: #e0e0e0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
     </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 
-    <div id="slide-counter" class="ui-overlay">
-        <span id="current-slide-num">1</span> / <span id="total-slides-num">1</span>
-    </div>
+    <div id="slide-counter" class="ui-overlay"><span id="current-slide-num">1</span> / <span id="total-slides-num">1</span></div>
     <div id="progress-bar"><div id="progress-fill"></div></div>
     <div class="navigation-controls">
         <button id="prev-btn" class="nav-button"><i class="fas fa-arrow-left"></i></button>
         <button id="next-btn" class="nav-button"><i class="fas fa-arrow-right"></i></button>
     </div>
 
+    <!-- SVG Definitions for Arrows -->
+    <svg style="width:0;height:0;position:absolute;">
+      <defs>
+        <marker id="arrow-nsubj" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-primary)"/></marker>
+        <marker id="arrow-obj" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-success)"/></marker>
+        <marker id="arrow-iobj" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-secondary)"/></marker>
+        <marker id="arrow-mod" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--color-accent)"/></marker>
+        <marker id="arrow-case" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"/></marker>
+      </defs>
+    </svg>
+
     <div id="slide-container">
         <div class="slide active title-slide">
              <h1>Universal Dependencyの世界へ</h1>
-            <div class="mt-12 text-lg">
-                <p class="font-bold">宮川 創</p>
-                <p>筑波大学</p>
-                <p>2025年6月 - 大阪大学ゲスト講義</p>
+            <p class="subtitle">言語の構造を解き明かす、統語分析とAIの旅へ。</p>
+            <div class="author-info">
+                <p>宮川 創 (筑波大学)</p>
+                <p>2025年6月 大阪大学</p>
             </div>
         </div>
 
         <div class="slide">
             <h2>本日の内容</h2>
             <div class="card">
-                <ol class="space-y-2 text-lg">
-                    <li>Universal Dependencies (UD) とは何か</li>
-                    <li>基本的な統語樹の読み方</li>
-                    <li>日本語の統語樹（基本）: 自動詞、他動詞、授受動詞</li>
-                    <li>日本語の統語樹（発展）: 修飾語、関係節、並列構造</li>
-                    <li>多言語の統語樹比較: 英語・アラビア語・ラテン語</li>
-                    <li>私の研究例: 危機言語（沖縄語）と古代言語（コプト語）</li>
-                    <li>便利なツールの紹介</li>
-                    <li>皆さんができる研究テーマ
-                        <span style="font-size: 0.8em; color: #f59e0b;">(✨AI機能付き)</span>
-                    </li>
-                    <li><strong style="color:var(--secondary-color)">【新機能】AI構文分析ラボ</strong>
-                         <span style="font-size: 0.8em; color: #f59e0b;">(✨AI描画機能付き)</span>
-                    </li>
+                <ol class="space-y-3 text-lg" style="list-style: none; padding-left: 0;">
+                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">1.</span>UDとは何か：統語樹の紹介</li>
+                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">2.</span>UDの構成要素と応用</li>
+                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">3.</span>統語樹の実例（日本語）</li>
+                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">4.</span>統語樹の実例（多言語比較）</li>
+                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">5.</span>研究例：危機言語と古代言語</li>
+                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">6.</span>便利なツール</li>
+                    <li><span style="color:var(--color-secondary); margin-right: 1rem; font-weight:bold;">7.</span><strong style="color:var(--color-text-primary)">AIと創る研究テーマ</strong></li>
+                    <li><span style="color:var(--color-secondary); margin-right: 1rem; font-weight:bold;">8.</span><strong style="color:var(--color-text-primary)">AI構文分析ラボ</strong></li>
+                    <li><span style="color:var(--color-secondary); margin-right: 1rem; font-weight:bold;">9.</span><strong style="color:var(--color-text-primary)">AI言語横断ラボ</strong></li>
                 </ol>
-            </div>
-             <div class="highlight-card">
-                <p>💡 <strong>今日のゴール</strong>：プログラミングなしで<span class="highlight">言語分析</span>ができるようになり、<span class="highlight">AIと共に研究テーマ</span>を創造する！</p>
             </div>
         </div>
 
         <div class="slide">
-            <h2>1. Universal Dependencies (UD) とは？</h2>
-            <div class="card">
-                <h3>世界共通の文法記述システム</h3>
-                <ul class="list-disc list-inside space-y-2">
-                    <li><strong>130以上の言語</strong>に対応（メジャー言語から危機言語まで）</li>
-                    <li><strong>228のツリーバンク</strong>（文法アノテーション付きコーパス）</li>
-                    <li>研究者・教育者・開発者が<strong>無料</strong>で利用可能</li>
-                    <li>世界中の研究者の協力によって開発・維持されている</li>
-                </ul>
-            </div>
-             <div class="highlight-card">
-                <p>✨ <strong>重要なポイント</strong>：どんな言語でも、<span class="highlight">単語間の依存関係</span>を<span class="highlight">有向グラフ（矢印）</span>で表現します。これにより、言語の垣根を越えた比較分析が可能になります。</p>
-            </div>
-        </div>
-        <div class="slide">
-            <h2>2. 基本的な統語樹の読み方</h2>
+            <h2>1. UDとは何か：統語樹の紹介</h2>
+            <p>Universal Dependencies (UD) は、文の構造を「統語樹」という図で表現します。これにより、一見複雑に見える文も、単語と単語のシンプルな関係に分解して理解できます。</p>
             <div class="tree-container">
-                <h3>「猫が寝る」</h3>
-                <svg class="dependency-tree" viewBox="0 0 400 200">
-                    <defs><marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"></path></marker></defs>
-                    <text x="100" y="150" class="dep-word" text-anchor="middle">猫</text>
-                    <text x="100" y="170" class="dep-pos" text-anchor="middle">NOUN</text>
-                    <text x="200" y="150" class="dep-word" text-anchor="middle">が</text>
-                    <text x="200" y="170" class="dep-pos" text-anchor="middle">ADP</text>
-                    <text x="300" y="150" class="dep-word" text-anchor="middle">寝る</text>
-                    <text x="300" y="170" class="dep-pos" text-anchor="middle">VERB</text>
-                    
-                    <path d="M 100 135 Q 200 70 290 135" class="dep-arrow" stroke="#3b82f6" marker-end="url(#arrow)"/>
-                    <text x="200" y="90" class="dep-label" fill="#3b82f6" text-anchor="middle">nsubj</text>
-                    <path d="M 200 135 Q 150 100 110 135" class="dep-arrow" stroke="#ef4444" marker-end="url(#arrow)"/>
-                    <text x="150" y="115" class="dep-label" fill="#ef4444" text-anchor="middle">case</text>
+                <h3>例：「公園で子供たちが元気に遊んでいる」</h3>
+                <svg class="dependency-tree" viewBox="0 0 800 280">
+                    <text x="80" y="200" class="dep-word" text-anchor="middle">公園</text>
+                    <text x="180" y="200" class="dep-word" text-anchor="middle">で</text>
+                    <text x="280" y="200" class="dep-word" text-anchor="middle">子供たち</text>
+                    <text x="400" y="200" class="dep-word" text-anchor="middle">が</text>
+                    <text x="520" y="200" class="dep-word" text-anchor="middle">元気に</text>
+                    <text x="640" y="200" class="dep-word" text-anchor="middle">遊んで</text>
+                    <text x="760" y="200" class="dep-word" text-anchor="middle">いる</text>
+                    <path d="M 80 185 Q 360 80 630 185" class="dep-arrow dep-mod" marker-end="url(#arrow-mod)"/><text x="360" y="105" class="dep-label dep-mod-label" text-anchor="middle">obl</text>
+                    <path d="M 180 185 Q 130 140 90 185" class="dep-arrow dep-case" marker-end="url(#arrow-case)"/><text x="130" y="155" class="dep-label dep-case-label" text-anchor="middle">case</text>
+                    <path d="M 280 185 Q 460 40 630 185" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/><text x="460" y="65" class="dep-label dep-nsubj-label" text-anchor="middle">nsubj</text>
+                    <path d="M 400 185 Q 340 140 290 185" class="dep-arrow dep-case" marker-end="url(#arrow-case)"/><text x="340" y="155" class="dep-label dep-case-label" text-anchor="middle">case</text>
+                    <path d="M 520 185 Q 580 120 630 185" class="dep-arrow dep-mod" marker-end="url(#arrow-mod)"/><text x="580" y="140" class="dep-label dep-mod-label" text-anchor="middle">advmod</text>
+                    <path d="M 760 185 Q 700 120 650 185" class="dep-arrow dep-case" marker-end="url(#arrow-case)"/><text x="700" y="140" class="dep-label dep-case-label" text-anchor="middle">aux</text>
                 </svg>
             </div>
+            <p>この統語樹は、「誰が（<span style="color:var(--color-primary)">子供たちが</span>）」、「どこで（<span style="color:var(--color-accent)">公園で</span>）」、「どのように（<span style="color:var(--color-accent)">元気に</span>）」、「何をしているか（遊んでいる）」という文の骨格を明確に示しています。UDは、このように文の意味の中心となる関係を捉えることができます。</p>
+        </div>
+        
+        <div class="slide">
+            <h2>2. UDの構成要素と応用</h2>
             <div class="card">
-                <h3>構成要素</h3>
-                <ul class="list-disc list-inside">
-                    <li><strong>単語 (Word Form)</strong>: 文を構成する各単語。「猫」「が」「寝る」</li>
-                    <li><strong>品詞 (UPOS)</strong>: 各単語の普遍的な品詞タグ。<code>NOUN</code> (名詞), <code>ADP</code> (助詞), <code>VERB</code> (動詞)</li>
-                    <li><strong>依存関係の矢印</strong>: 単語間の関係を示す。矢印の元が「従属部」、先が「主導部」。</li>
-                    <li><strong>依存関係ラベル (DEPREL)</strong>: 矢印が示す文法関係の種類。<code>nsubj</code> (主語), <code>case</code> (格表示)</li>
-                </ul>
+                <h3>UDの3つの柱</h3>
+                <p>UDは、主に「品詞タグ」「依存関係ラベル」「CoNLL-Uフォーマット」の3つの要素で構成されています。これらが世界共通の基準として機能することで、多様な言語の分析が可能になります。</p>
+            </div>
+             <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+                 <div class="card">
+                    <h3><i class="fas fa-tags" style="color: var(--color-primary);"></i> 品詞 (POS)</h3>
+                    <p><code>NOUN</code>(名詞)や<code>VERB</code>(動詞)など、全言語共通の17種類のタグで単語を分類します。</p>
+                </div>
+                 <div class="card">
+                    <h3><i class="fas fa-project-diagram" style="color: var(--color-success);"></i> 依存関係 (DepRel)</h3>
+                    <p><code>nsubj</code>(主語)や<code>obj</code>(目的語)など、単語間の文法的な関係性を示します。</p>
+                </div>
+                 <div class="card">
+                    <h3><i class="fas fa-file-alt" style="color: var(--color-secondary);"></i> CoNLL-U形式</h3>
+                    <p>上記の文法情報をテキストで記録するための標準フォーマットです。</p>
+                </div>
             </div>
         </div>
+        
         <div class="slide">
-            <h2>3. 日本語の統語樹（基本）</h2>
+            <h2>3. UDの応用：言語類型論</h2>
+            <div class="card">
+                <h3>大規模データで言語の「法則」を探る</h3>
+                <p>UDの大規模なデータセットを利用することで、これまで手作業では難しかった、世界中の言語に共通する法則（言語普遍性）や傾向を統計的に分析できます。</p>
+                <ul class="list-disc list-inside">
+                    <li><strong>基本語順の調査：</strong>「主語(S)・動詞(V)・目的語(O)」の語順が、どの言語で、どのくらいの頻度で見られるか（例：SOV型、SVO型）を大規模に集計し、新たな法則性を発見する。</li>
+                    <li><strong>主辞と従属要素の関係：</strong>前置詞を使う言語と後置詞を使う言語の分布や、助動詞の位置など、より詳細な文法パターンの比較が可能になる。</li>
+                </ul>
+                <p class="mt-4">UDは、言語学者がより確かなデータに基づいて、言語の多様性と普遍性について議論するための強力な武器となります。</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>3. UDの応用：特定の文法現象の分析</h2>
+            <div class="card">
+                <h3>異なる言語の「同じ機能」を比べる</h3>
+                <p>UDは、言語によって表現方法が全く異なる文法現象でも、その「機能」が同じであれば、共通のラベルで分析することを可能にします。</p>
+                <div class="grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+                    <div>
+                        <h4>格表示 (Case Marking)</h4>
+                        <p style="font-size: 1.1rem;">日本語の助詞「が」も、ラテン語の名詞の語形変化（屈折）も、UDではどちらも名詞が文中で果たす役割（主語など）を示すための仕組みとして、統一的に分析できます。</p>
+                    </div>
+                     <div>
+                        <h4>関係節 (Relative Clauses)</h4>
+                        <p style="font-size: 1.1rem;">日本語の「猫が食べた魚」と英語の "the fish that the cat ate" は、語順も構造も異なりますが、どちらも「魚」という名詞を修飾する節として、<code>acl</code>（連体修飾節）という共通のラベルで捉えることができます。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+         <div class="slide">
+            <h2>3. UDの応用：自然言語処理（AI技術）</h2>
+             <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+                 <div class="card">
+                    <h3><i class="fas fa-language" style="color: var(--color-primary);"></i> 機械翻訳</h3>
+                    <p>UDで文の骨格（主語・目的語など）を捉えることで、特に語順が大きく異なる言語間（例：日本語と英語）の翻訳精度が向上します。</p>
+                </div>
+                 <div class="card">
+                    <h3><i class="fas fa-search" style="color: var(--color-success);"></i> 情報抽出</h3>
+                    <p>ニュース記事から「誰が、何を、どうした」という情報を自動で抜き出す際に、UDの依存関係が重要な手がかりになります。</p>
+                </div>
+                 <div class="card">
+                    <h3><i class="fas fa-robot" style="color: var(--color-secondary);"></i> 対話システム</h3>
+                    <p>ユーザーの発言の意図を正確に理解するために、文の構造情報が利用されます。これにより、より自然な対話が可能になります。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>4. 統語樹の実例（日本語）</h2>
             <div class="tree-container">
                 <h3>他動詞: 「私は本を読む」</h3>
                  <svg class="dependency-tree" viewBox="0 0 500 220">
-                    <defs><marker id="arrow2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"></path></marker></defs>
                     <text x="80" y="160" class="dep-word" text-anchor="middle">私</text><text x="80" y="180" class="dep-pos" text-anchor="middle">PRON</text>
-                    <text x="160" y="160" class="dep-word" text-anchor="middle">は</text><text x="160" y="180" class="dep-pos" text-anchor="middle">ADP</text>
                     <text x="260" y="160" class="dep-word" text-anchor="middle">本</text><text x="260" y="180" class="dep-pos" text-anchor="middle">NOUN</text>
-                    <text x="340" y="160" class="dep-word" text-anchor="middle">を</text><text x="340" y="180" class="dep-pos" text-anchor="middle">ADP</text>
                     <text x="440" y="160" class="dep-word" text-anchor="middle">読む</text><text x="440" y="180" class="dep-pos" text-anchor="middle">VERB</text>
-                    <path d="M 80 145 Q 260 50 430 145" class="dep-arrow" stroke="#3b82f6" marker-end="url(#arrow2)"/><text x="260" y="75" class="dep-label" fill="#3b82f6" text-anchor="middle">nsubj</text>
-                    <path d="M 160 145 Q 120 115 90 145" class="dep-arrow" stroke="#ef4444" marker-end="url(#arrow2)"/><text x="120" y="130" class="dep-label" fill="#ef4444" text-anchor="middle">case</text>
-                    <path d="M 260 145 Q 350 90 430 145" class="dep-arrow" stroke="#10b981" marker-end="url(#arrow2)"/><text x="350" y="110" class="dep-label" fill="#10b981" text-anchor="middle">obj</text>
-                    <path d="M 340 145 Q 300 115 270 145" class="dep-arrow" stroke="#ef4444" marker-end="url(#arrow2)"/><text x="300" y="130" class="dep-label" fill="#ef4444" text-anchor="middle">case</text>
+                    <path d="M 80 145 Q 260 50 430 145" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/><text x="260" y="75" class="dep-label dep-nsubj-label" text-anchor="middle">nsubj</text>
+                    <path d="M 260 145 Q 350 90 430 145" class="dep-arrow dep-obj" marker-end="url(#arrow-obj)"/><text x="350" y="110" class="dep-label dep-obj-label" text-anchor="middle">obj</text>
                 </svg>
             </div>
              <div class="tree-container">
-                <h3>授受動詞: 「太郎は花子に本をあげた」</h3>
-                <svg class="dependency-tree" viewBox="0 0 700 250">
-                    <defs><marker id="arrow3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"></path></marker></defs>
-                    <text x="80" y="180" class="dep-word" text-anchor="middle">太郎</text><text x="80" y="200" class="dep-pos" text-anchor="middle">PROPN</text>
-                    <text x="160" y="180" class="dep-word" text-anchor="middle">は</text><text x="160" y="200" class="dep-pos" text-anchor="middle">ADP</text>
-                    <text x="260" y="180" class="dep-word" text-anchor="middle">花子</text><text x="260" y="200" class="dep-pos" text-anchor="middle">PROPN</text>
-                    <text x="340" y="180" class="dep-word" text-anchor="middle">に</text><text x="340" y="200" class="dep-pos" text-anchor="middle">ADP</text>
-                    <text x="440" y="180" class="dep-word" text-anchor="middle">本</text><text x="440" y="200" class="dep-pos" text-anchor="middle">NOUN</text>
-                    <text x="520" y="180" class="dep-word" text-anchor="middle">を</text><text x="520" y="200" class="dep-pos" text-anchor="middle">ADP</text>
-                    <text x="620" y="180" class="dep-word" text-anchor="middle">あげた</text><text x="620" y="200" class="dep-pos" text-anchor="middle">VERB</text>
-                    <path d="M 80 165 Q 350 40 610 165" class="dep-arrow" stroke="#3b82f6" marker-end="url(#arrow3)"/><text x="350" y="70" class="dep-label" fill="#3b82f6" text-anchor="middle">nsubj</text>
-                    <path d="M 260 165 Q 440 80 610 165" class="dep-arrow" stroke="#a855f7" marker-end="url(#arrow3)"/><text x="440" y="105" class="dep-label" fill="#a855f7" text-anchor="middle">iobj</text>
-                    <path d="M 440 165 Q 530 110 610 165" class="dep-arrow" stroke="#10b981" marker-end="url(#arrow3)"/><text x="530" y="130" class="dep-label" fill="#10b981" text-anchor="middle">obj</text>
-                </svg>
-            </div>
-        </div>
-        <div class="slide">
-            <h2>4. 日本語の統語樹（発展）</h2>
-            <div class="tree-container">
                 <h3>関係節: 「昨日会った人が本を読んだ」</h3>
                 <svg class="dependency-tree" viewBox="0 0 700 280">
-                   <defs><marker id="arrow4" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"></path></marker></defs>
-                   <text x="80" y="200" class="dep-word" text-anchor="middle">昨日</text><text x="80" y="220" class="dep-pos" text-anchor="middle">NOUN</text>
-                   <text x="180" y="200" class="dep-word" text-anchor="middle">会った</text><text x="180" y="220" class="dep-pos" text-anchor="middle">VERB</text>
-                   <text x="280" y="200" class="dep-word" text-anchor="middle">人</text><text x="280" y="220" class="dep-pos" text-anchor="middle">NOUN</text>
-                   <text x="360" y="200" class="dep-word" text-anchor="middle">が</text><text x="360" y="220" class="dep-pos" text-anchor="middle">ADP</text>
-                   <text x="460" y="200" class="dep-word" text-anchor="middle">本</text><text x="460" y="220" class="dep-pos" text-anchor="middle">NOUN</text>
-                   <text x="540" y="200" class="dep-word" text-anchor="middle">を</text><text x="540" y="220" class="dep-pos" text-anchor="middle">ADP</text>
-                   <text x="640" y="200" class="dep-word" text-anchor="middle">読んだ</text><text x="640" y="220" class="dep-pos" text-anchor="middle">VERB</text>
-                    <path d="M 80 185 Q 130 150 170 185" class="dep-arrow" stroke="#f97316" marker-end="url(#arrow4)"/><text x="130" y="165" class="dep-label" fill="#f97316" text-anchor="middle">obl</text>
-                    <path d="M 180 185 Q 230 150 270 185" class="dep-arrow" stroke="#8b5cf6" marker-end="url(#arrow4)"/><text x="230" y="165" class="dep-label" fill="#8b5cf6" text-anchor="middle">acl</text>
-                    <path d="M 280 185 Q 460 60 630 185" class="dep-arrow" stroke="#3b82f6" marker-end="url(#arrow4)"/><text x="460" y="90" class="dep-label" fill="#3b82f6" text-anchor="middle">nsubj</text>
-                    <path d="M 460 185 Q 550 120 630 185" class="dep-arrow" stroke="#10b981" marker-end="url(#arrow4)"/><text x="550" y="140" class="dep-label" fill="#10b981" text-anchor="middle">obj</text>
-                    <rect x="50" y="170" width="250" height="70" rx="10" stroke="#8b5cf6" stroke-dasharray="5,5" stroke-width="2" fill="none"/>
+                   <text x="80" y="200" class="dep-word" text-anchor="middle">昨日</text>
+                   <text x="180" y="200" class="dep-word" text-anchor="middle">会った</text>
+                   <text x="280" y="200" class="dep-word" text-anchor="middle">人</text>
+                   <text x="460" y="200" class="dep-word" text-anchor="middle">本</text>
+                   <text x="640" y="200" class="dep-word" text-anchor="middle">読んだ</text>
+                    <path d="M 80 185 Q 130 150 170 185" class="dep-arrow dep-mod" marker-end="url(#arrow-mod)"/><text x="130" y="165" class="dep-label dep-mod-label" text-anchor="middle">obl</text>
+                    <path d="M 180 185 Q 230 150 270 185" class="dep-arrow dep-mod" marker-end="url(#arrow-mod)"/><text x="230" y="165" class="dep-label dep-mod-label" text-anchor="middle">acl</text>
+                    <path d="M 280 185 Q 460 60 630 185" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/><text x="460" y="90" class="dep-label dep-nsubj-label" text-anchor="middle">nsubj</text>
+                    <path d="M 460 185 Q 550 120 630 185" class="dep-arrow dep-obj" marker-end="url(#arrow-obj)"/><text x="550" y="140" class="dep-label dep-obj-label" text-anchor="middle">obj</text>
+                    <rect x="50" y="170" width="250" height="60" rx="10" stroke="var(--color-accent)" stroke-dasharray="5,5" stroke-width="2" fill="none"/>
                 </svg>
             </div>
-            <div class="tree-container">
-                <h3>並列構造: 「りんごとみかんを買った」</h3>
-                 <svg class="dependency-tree" viewBox="0 0 600 250">
-                    <defs><marker id="arrow5" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"></path></marker></defs>
-                    <text x="100" y="180" class="dep-word" text-anchor="middle">りんご</text><text x="100" y="200" class="dep-pos" text-anchor="middle">NOUN</text>
-                    <text x="200" y="180" class="dep-word" text-anchor="middle">と</text><text x="200" y="200" class="dep-pos" text-anchor="middle">CCONJ</text>
-                    <text x="300" y="180" class="dep-word" text-anchor="middle">みかん</text><text x="300" y="200" class="dep-pos" text-anchor="middle">NOUN</text>
-                    <text x="400" y="180" class="dep-word" text-anchor="middle">を</text><text x="400" y="200" class="dep-pos" text-anchor="middle">ADP</text>
-                    <text x="520" y="180" class="dep-word" text-anchor="middle">買った</text><text x="520" y="200" class="dep-pos" text-anchor="middle">VERB</text>
-                    <path d="M 300 165 Q 200 120 110 165" class="dep-arrow" stroke="#f97316" marker-end="url(#arrow5)"/><text x="200" y="135" class="dep-label" fill="#f97316" text-anchor="middle">conj</text>
-                    <path d="M 200 165 Q 250 135 290 165" class="dep-arrow" stroke="#ef4444" marker-end="url(#arrow5)"/><text x="250" y="150" class="dep-label" fill="#ef4444" text-anchor="middle">cc</text>
-                    <path d="M 100 165 Q 310 70 510 165" class="dep-arrow" stroke="#10b981" marker-end="url(#arrow5)"/><text x="310" y="100" class="dep-label" fill="#10b981" text-anchor="middle">obj</text>
-                 </svg>
-            </div>
         </div>
+        
         <div class="slide">
-            <h2>5. 多言語の統語樹比較</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <h2>5. 統語樹の実例（多言語比較）</h2>
+            <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
                 <div class="tree-container">
                     <h3>英語 (SVO)</h3>
                     <p class="text-center font-bold">I love you</p>
-                    <svg class="dependency-tree h-40" viewBox="0 0 400 180">
+                    <svg class="dependency-tree" style="height:150px" viewBox="0 0 400 200">
                         <text x="80" y="120" class="dep-word" text-anchor="middle">I</text>
                         <text x="200" y="120" class="dep-word" text-anchor="middle">love</text>
                         <text x="320" y="120" class="dep-word" text-anchor="middle">you</text>
-                        <path d="M 80 105 Q 140 50 190 105" class="dep-arrow" stroke="#3b82f6" marker-end="url(#arrow)"/>
-                        <path d="M 320 105 Q 260 50 210 105" class="dep-arrow" stroke="#10b981" marker-end="url(#arrow)"/>
-                        <text x="140" y="70" class="dep-label" fill="#3b82f6">nsubj</text>
-                        <text x="260" y="70" class="dep-label" fill="#10b981">obj</text>
+                        <path d="M 80 105 Q 140 50 190 105" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/>
+                        <text x="140" y="70" class="dep-label dep-nsubj-label" text-anchor="middle">nsubj</text>
+                        <path d="M 320 105 Q 260 50 210 105" class="dep-arrow dep-obj" marker-end="url(#arrow-obj)"/>
+                        <text x="260" y="70" class="dep-label dep-obj-label" text-anchor="middle">obj</text>
                     </svg>
                 </div>
                 <div class="tree-container">
                     <h3>アラビア語 (VSO)</h3>
                     <p class="text-center font-bold" dir="rtl">قرأ الطالب الكتاب</p>
-                     <svg class="dependency-tree h-40" viewBox="0 0 400 180">
+                     <svg class="dependency-tree" style="height:150px" viewBox="0 0 400 200">
                         <text x="320" y="120" class="dep-word" text-anchor="middle">قرأ</text>
                         <text x="200" y="120" class="dep-word" text-anchor="middle">الطالب</text>
                         <text x="80" y="120" class="dep-word" text-anchor="middle">الكتاب</text>
-                        <path d="M 200 105 Q 260 50 310 105" class="dep-arrow" stroke="#3b82f6" marker-end="url(#arrow)"/>
-                        <path d="M 80 105 Q 200 50 310 105" class="dep-arrow" stroke="#10b981" marker-end="url(#arrow)"/>
-                        <text x="260" y="70" class="dep-label" fill="#3b82f6">nsubj</text>
-                        <text x="180" y="70" class="dep-label" fill="#10b981">obj</text>
+                        <path d="M 200 105 Q 260 50 310 105" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/>
+                        <text x="260" y="70" class="dep-label dep-nsubj-label" text-anchor="middle">nsubj</text>
+                        <path d="M 80 105 Q 200 50 310 105" class="dep-arrow dep-obj" marker-end="url(#arrow-obj)"/>
+                        <text x="180" y="70" class="dep-label dep-obj-label" text-anchor="middle">obj</text>
                     </svg>
                 </div>
-                 <div class="tree-container md:col-span-2">
-                    <h3>ラテン語 (自由語順)</h3>
-                    <p class="text-center font-bold">Puella rosam amat</p>
-                    <svg class="dependency-tree h-48" viewBox="0 0 600 200">
-                        <text x="100" y="130" class="dep-word" text-anchor="middle">Puella</text>
-                        <text x="100" y="150" class="dep-pos">少女[主格]</text>
-                        <text x="300" y="130" class="dep-word" text-anchor="middle">rosam</text>
-                        <text x="300" y="150" class="dep-pos">バラ[対格]</text>
-                        <text x="500" y="130" class="dep-word" text-anchor="middle">amat</text>
-                        <text x="500" y="150" class="dep-pos">愛する</text>
-                        <path d="M 100 115 Q 300 40 490 115" class="dep-arrow" stroke="#3b82f6" marker-end="url(#arrow)"/>
-                        <path d="M 300 115 Q 400 60 490 115" class="dep-arrow" stroke="#10b981" marker-end="url(#arrow)"/>
-                         <text x="300" y="60" class="dep-label" fill="#3b82f6">nsubj</text>
-                        <text x="400" y="80" class="dep-label" fill="#10b981">obj</text>
-                    </svg>
-                    <p class="text-sm text-center text-slate-500">※格変化があるため "Rosam amat puella" (OSV) などでも同じ意味を表す。</p>
-                </div>
-            </div>
-             <div class="highlight-card">
-                <p>🌍 UDを使うことで、<span class="highlight">語順が異なる言語でも同じ文法関係（nsubj, obj）を抽出</span>し、比較できます。</p>
             </div>
         </div>
         
         <div class="slide">
-            <h2>6. 私の研究例</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <h2>5. 統語樹の実例（ラテン語の自由な語順）</h2>
+            <p>ラテン語は格変化により単語の文法的な役割が示されるため、語順を比較的自由に変えることができます。しかし、どの語順でも統語的な関係（依存関係）は変わりません。</p>
+            <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
+                <div class="tree-container">
+                    <h3>SOV: <span class="font-normal">Puella rosam amat.</span></h3>
+                    <svg class="dependency-tree" style="height:150px" viewBox="0 0 500 200">
+                        <text x="100" y="130" class="dep-word">Puella</text><text x="100" y="150" class="dep-pos">少女</text>
+                        <text x="250" y="130" class="dep-word">rosam</text><text x="250" y="150" class="dep-pos">バラ</text>
+                        <text x="400" y="130" class="dep-word">amat</text><text x="400" y="150" class="dep-pos">愛する</text>
+                        <path d="M 100 115 Q 250 40 390 115" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/><text x="250" y="65" class="dep-label dep-nsubj-label">nsubj</text>
+                        <path d="M 250 115 Q 325 70 390 115" class="dep-arrow dep-obj" marker-end="url(#arrow-obj)"/><text x="325" y="90" class="dep-label dep-obj-label">obj</text>
+                    </svg>
+                </div>
+                <div class="tree-container">
+                    <h3>SVO: <span class="font-normal">Puella amat rosam.</span></h3>
+                     <svg class="dependency-tree" style="height:150px" viewBox="0 0 500 200">
+                        <text x="100" y="130" class="dep-word">Puella</text><text x="100" y="150" class="dep-pos">少女</text>
+                        <text x="250" y="130" class="dep-word">amat</text><text x="250" y="150" class="dep-pos">愛する</text>
+                        <text x="400" y="130" class="dep-word">rosam</text><text x="400" y="150" class="dep-pos">バラ</text>
+                        <path d="M 100 115 Q 175 70 240 115" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/><text x="175" y="90" class="dep-label dep-nsubj-label">nsubj</text>
+                        <path d="M 400 115 Q 325 70 260 115" class="dep-arrow dep-obj" marker-end="url(#arrow-obj)"/><text x="325" y="90" class="dep-label dep-obj-label">obj</text>
+                    </svg>
+                </div>
+                 <div class="tree-container">
+                    <h3>OVS: <span class="font-normal">Rosam amat puella.</span></h3>
+                    <svg class="dependency-tree" style="height:150px" viewBox="0 0 500 200">
+                        <text x="100" y="130" class="dep-word">Rosam</text><text x="100" y="150" class="dep-pos">バラ</text>
+                        <text x="250" y="130" class="dep-word">amat</text><text x="250" y="150" class="dep-pos">愛する</text>
+                        <text x="400" y="130" class="dep-word">puella</text><text x="400" y="150" class="dep-pos">少女</text>
+                        <path d="M 100 115 Q 175 70 240 115" class="dep-arrow dep-obj" marker-end="url(#arrow-obj)"/><text x="175" y="90" class="dep-label dep-obj-label">obj</text>
+                        <path d="M 400 115 Q 325 70 260 115" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/><text x="325" y="90" class="dep-label dep-nsubj-label">nsubj</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>6. 研究例：危機言語と古代言語</h2>
+            <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
                 <div class="tree-container">
                     <h3>危機言語: 沖縄語</h3>
-                    <p class="text-center font-bold">ワンネー チューヤ ガッコーンカイ イチュン</p>
-                    <p class="text-center text-sm text-slate-500">（私は今日学校に行く）</p>
-                     <svg class="dependency-tree h-48" viewBox="0 0 700 220">
-                        <defs>
-                            <marker id="arrowOki" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6"/></marker>
-                        </defs>
-                        <text x="80" y="150" class="dep-word" text-anchor="middle">ワンネー</text>
-                        <text x="220" y="150" class="dep-word" text-anchor="middle">チューヤ</text>
-                        <text x="380" y="150" class="dep-word" text-anchor="middle">ガッコー</text>
-                        <text x="500" y="150" class="dep-word" text-anchor="middle">ンカイ</text>
-                        <text x="620" y="150" class="dep-word" text-anchor="middle">イチュン</text>
-                        
-                        <path d="M 80 135 Q 350 30 610 135" class="dep-arrow" stroke="#3b82f6" marker-end="url(#arrowOki)"/><text x="350" y="55" class="dep-label" fill="#3b82f6">nsubj</text>
-                        <path d="M 220 135 Q 420 70 610 135" class="dep-arrow" stroke="#f97316" marker-end="url(#arrowOki)"/><text x="420" y="95" class="dep-label" fill="#f97316">obl</text>
-                        <path d="M 380 135 Q 500 80 610 135" class="dep-arrow" stroke="#22c55e" marker-end="url(#arrowOki)"/><text x="500" y="105" class="dep-label" fill="#22c55e">obl</text>
-                        <path d="M 500 135 Q 440 105 390 135" class="dep-arrow" stroke="#ef4444" marker-end="url(#arrowOki)"/><text x="440" y="120" class="dep-label" fill="#ef4444">case</text>
+                    <p class="text-center font-bold">わんねー ちゅーや 学校んかい 行ちゅん</p>
+                     <svg class="dependency-tree" style="height:180px" viewBox="0 0 700 220">
+                        <text x="80" y="150" class="dep-word" text-anchor="middle">わんねー</text>
+                        <text x="220" y="150" class="dep-word" text-anchor="middle">ちゅーや</text>
+                        <text x="380" y="150" class="dep-word" text-anchor="middle">学校</text>
+                        <text x="500" y="150" class="dep-word" text-anchor="middle">んかい</text>
+                        <text x="620" y="150" class="dep-word" text-anchor="middle">行ちゅん</text>
+                        <path d="M 80 135 Q 350 30 610 135" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/><text x="350" y="55" class="dep-label dep-nsubj-label">nsubj</text>
+                        <path d="M 220 135 Q 420 70 610 135" class="dep-arrow dep-mod" marker-end="url(#arrow-mod)"/><text x="420" y="95" class="dep-label dep-mod-label">obl</text>
+                        <path d="M 380 135 Q 500 80 610 135" class="dep-arrow dep-mod" marker-end="url(#arrow-mod)"/><text x="500" y="105" class="dep-label dep-mod-label">obl</text>
+                        <path d="M 500 135 Q 440 105 390 135" class="dep-arrow dep-case" marker-end="url(#arrow-case)"/>
                     </svg>
                 </div>
                 <div class="tree-container">
                     <h3>古代言語: コプト語</h3>
                     <p class="text-center font-bold">ⲁϥⲥⲱⲧⲙ ⲛϭⲓ ⲡⲣⲱⲙⲉ</p>
-                    <p class="text-center text-sm text-slate-500">（その男は聞いた）</p>
-                    <svg class="dependency-tree h-48" viewBox="0 0 600 220">
+                    <svg class="dependency-tree" style="height:180px" viewBox="0 0 600 220">
                          <text x="100" y="150" class="dep-word" text-anchor="middle">ⲁϥⲥⲱⲧⲙ</text>
                          <text x="300" y="150" class="dep-word" text-anchor="middle">ⲛϭⲓ</text>
                          <text x="500" y="150" class="dep-word" text-anchor="middle">ⲡⲣⲱⲙⲉ</text>
-                         <path d="M 500 135 Q 300 60 110 135" class="dep-arrow" stroke="#3b82f6" marker-end="url(#arrow)"/><text x="300" y="80" class="dep-label" fill="#3b82f6">nsubj</text>
-                         <path d="M 300 135 Q 400 100 490 135" class="dep-arrow" stroke="#ef4444" marker-end="url(#arrow)"/><text x="400" y="115" class="dep-label" fill="#ef4444">case</text>
+                         <path d="M 500 135 Q 300 60 110 135" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/><text x="300" y="80" class="dep-label dep-nsubj-label">nsubj</text>
+                         <path d="M 300 135 Q 400 100 490 135" class="dep-arrow dep-case" marker-end="url(#arrow-case)"/>
                     </svg>
                 </div>
             </div>
-             <div class="card">
-                <p>UDは、文字資料しか残っていない古代言語や、話者数が減少している危機言語の構造を記録し、後世に伝えるための強力なツールとなります。</p>
-            </div>
         </div>
+        
         <div class="slide">
-             <h2>7. 便利なツールの紹介</h2>
-             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                 <div class="card text-center">
-                     <i class="fas fa-globe-asia text-4xl text-blue-500 mb-4"></i>
-                     <h3 class="text-xl">UDPipe</h3>
-                     <p>ブラウザで使える多言語構文解析ツール。コピペで簡単解析。</p>
-                     <a href="https://lindat.mff.cuni.cz/services/udpipe/" target="_blank" class="font-bold text-blue-600">試してみる &rarr;</a>
-                 </div>
-                 <div class="card text-center">
-                    <i class="fas fa-search text-4xl text-purple-500 mb-4"></i>
-                     <h3 class="text-xl">ArboratorGrew</h3>
-                     <p>統語樹の編集、検索、可視化。研究データの管理に最適。</p>
-                     <a href="https://arborator.github.io/arborator-grew/" target="_blank" class="font-bold text-purple-600">試してみる &rarr;</a>
-                 </div>
-                  <div class="card text-center">
-                    <i class="fas fa-palette text-4xl text-pink-500 mb-4"></i>
-                     <h3 class="text-xl">Deplacy</h3>
-                     <p>Pythonライブラリ。美しい統語樹の画像を生成し論文に活用。</p>
-                     <a href="https://koichiyasuoka.github.io/deplacy/" target="_blank" class="font-bold text-pink-600">試してみる &rarr;</a>
-                 </div>
-             </div>
-             <div class="highlight-card">
-                 <p>これらのツールを使えば、<span class="highlight">プログラミングの知識がなくても</span>、今日から言語分析を始めることができます。</p>
-             </div>
+            <h2>7. 便利なツール</h2>
+            <p>これらのツールはすべて無料で、ブラウザから直接利用できます。プログラミングの知識は必要ありません。</p>
+            <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
+                <div class="card" style="text-align: center;">
+                    <i class="fas fa-globe-asia" style="font-size: 2.5rem; color: var(--color-primary); margin-bottom: 1rem;"></i>
+                    <h3>UDPipe</h3>
+                    <p>テキストを貼り付けるだけで、100以上の言語を自動で構文解析します。</p>
+                    <a href="https://lindat.mff.cuni.cz/services/udpipe/" target="_blank" style="font-weight: bold; color: var(--color-primary);">試してみる &rarr;</a>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <i class="fas fa-pen-ruler" style="font-size: 2.5rem; color: var(--color-secondary); margin-bottom: 1rem;"></i>
+                    <h3>ArboratorGrew</h3>
+                    <p>統語樹を直感的に編集したり、特定の文法パターンを検索したりできます。</p>
+                    <a href="https://arborator.github.io/arborator-grew/" target="_blank" style="font-weight: bold; color: var(--color-secondary);">試してみる &rarr;</a>
+                </div>
+                <div class="card" style="text-align: center;">
+                    <i class="fas fa-search-location" style="font-size: 2.5rem; color: var(--color-success); margin-bottom: 1rem;"></i>
+                    <h3>UD Treebank Search</h3>
+                    <p>世界中のUDツリーバンクから、特定の単語や構造を横断的に検索できます。</p>
+                     <a href="https://universaldependencies.org/search.html" target="_blank" style="font-weight: bold; color: var(--color-success);">試してみる &rarr;</a>
+                </div>
+            </div>
         </div>
 
         <div class="slide">
-            <h2>8. 皆さんができる研究テーマ</h2>
+            <h2>8. AIと創る研究テーマ</h2>
+            <p>あなたの興味をAIに伝え、新しい研究の種を見つけましょう。</p>
+            <div id="api-key-setup-1" class="card" style="display: none; border-color: var(--color-accent);">
+                <h3 style="color: var(--color-accent);">AI機能の利用にはAPIキーが必要です</h3>
+                <p style="font-size:1rem;">このAI機能はGoogleのGemini APIを使用しています。GitHub Pages等で機能を有効にするには、ご自身のAPIキーを入力してください。</p>
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1rem;">
+                    <input type="password" class="api-key-input" placeholder="ここにGemini APIキーを貼り付け" style="flex-grow: 1; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: 8px; font-size: 1rem;">
+                    <button class="save-api-key-btn gemini-button" style="background: var(--color-accent);">保存</button>
+                </div>
+                <p style="font-size: 0.9rem; margin-top: 1rem;">APIキーは<a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--color-primary); text-decoration: underline;">Google AI Studio</a>から無料で取得できます。入力されたキーはブラウザのローカルストレージにのみ保存されます。</p>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="research-topics-container">
-                <div class="card">
-                    <h3 class="text-xl">📱 SNS・若者言葉の分析</h3>
-                    <p>「てぇてぇ」「○○しか勝たん」など、新しい表現の構造を分析する。</p>
-                </div>
-                <div class="card">
-                    <h3 class="text-xl">🎮 ゲーム・アニメのキャラ言語</h3>
-                    <p>特定のキャラクターの口癖や話し方の統語的な特徴を明らかにする。</p>
-                </div>
-                 <div class="card">
-                    <h3 class="text-xl">🗾 方言の記述</h3>
-                    <p>自分の出身地の方言の文構造を記録し、共通語との違いを比較する。</p>
-                </div>
-                 <div class="card">
-                    <h3 class="text-xl">✍️ 作家・著名人の文体分析</h3>
-                    <p>好きな作家や有名人の文章を分析し、その人ならではの文体の特徴を探る。</p>
-                </div>
+                 <div class="card"><h3 class="text-xl">📱 SNS・若者言葉の分析</h3><p>「てぇてぇ」「○○しか勝たん」など、新しい表現の構造を分析する。</p></div>
+                 <div class="card"><h3 class="text-xl">🎮 ゲーム・アニメのキャラ言語</h3><p>特定のキャラクターの口癖や話し方の統語的な特徴を明らかにする。</p></div>
             </div>
             <div class="text-center mt-8">
                 <button id="generate-topics-btn" class="gemini-button">
-                    ✨ 新しい研究テーマをAIに提案してもらう
+                    <i class="fas fa-magic"></i> 新しい研究テーマをAIに提案してもらう
                 </button>
             </div>
-            <div id="topics-loader" class="text-center mt-4" style="display: none;">読み込み中...</div>
+            <div id="topics-loader" class="text-center mt-4" style="display: none;">AIが考えています...</div>
         </div>
         
         <div class="slide">
             <h2>9. AI構文分析ラボ</h2>
-            <div class="card">
+             <div id="api-key-setup-2" class="card" style="display: none; border-color: var(--color-accent);">
+                <h3 style="color: var(--color-accent);">AI機能の利用にはAPIキーが必要です</h3>
+                <p style="font-size:1rem;">このAI機能はGoogleのGemini APIを使用しています。GitHub Pages等で機能を有効にするには、ご自身のAPIキーを入力してください。</p>
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1rem;">
+                    <input type="password" class="api-key-input" placeholder="ここにGemini APIキーを貼り付け" style="flex-grow: 1; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: 8px; font-size: 1rem;">
+                    <button class="save-api-key-btn gemini-button" style="background: var(--color-accent);">保存</button>
+                </div>
+                <p style="font-size: 0.9rem; margin-top: 1rem;">APIキーは<a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--color-primary); text-decoration: underline;">Google AI Studio</a>から無料で取得できます。入力されたキーはブラウザのローカルストレージにのみ保存されます。</p>
+            </div>
+             <div class="card">
                 <h3>分析したい日本語の文章を入力してください</h3>
-                <textarea id="sentence-input" rows="3" class="w-full p-2 border border-gray-300 rounded-md text-lg" placeholder="例：隣の客はよく柿食う客だ"></textarea>
+                <textarea id="sentence-input" rows="3" class="w-full p-3 border border-gray-300 rounded-xl text-lg" style="border-color: var(--color-border);" placeholder="例：隣の客はよく柿食う客だ"></textarea>
                 <div class="text-center mt-4">
                     <button id="analyze-sentence-btn" class="gemini-button">
-                        ✨ この文章をAIに分析・描画させる
+                        <i class="fas fa-brain"></i> この文章をAIに分析・描画させる
                     </button>
                 </div>
             </div>
-            <div id="analysis-result" class="mt-6">
-                </div>
+            <div id="analysis-result" class="mt-6"></div>
         </div>
+        
+        <div class="slide">
+            <h2>10. AI言語横断ラボ</h2>
+             <div id="api-key-setup-3" class="card" style="display: none; border-color: var(--color-accent);">
+                <h3 style="color: var(--color-accent);">AI機能の利用にはAPIキーが必要です</h3>
+                <p style="font-size:1rem;">このAI機能はGoogleのGemini APIを使用しています。GitHub Pages等で機能を有効にするには、ご自身のAPIキーを入力してください。</p>
+                <div style="display: flex; gap: 1rem; align-items: center; margin-top: 1rem;">
+                    <input type="password" class="api-key-input" placeholder="ここにGemini APIキーを貼り付け" style="flex-grow: 1; padding: 0.75rem; border: 1px solid var(--color-border); border-radius: 8px; font-size: 1rem;">
+                    <button class="save-api-key-btn gemini-button" style="background: var(--color-accent);">保存</button>
+                </div>
+                <p style="font-size: 0.9rem; margin-top: 1rem;">APIキーは<a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--color-primary); text-decoration: underline;">Google AI Studio</a>から無料で取得できます。入力されたキーはブラウザのローカルストレージにのみ保存されます。</p>
+            </div>
+            <div class="card">
+                 <h3>日本語の文章を入力し、比較したい言語を選んでください</h3>
+                 <div class="grid" style="display:grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center;">
+                    <input id="cross-lingual-input" type="text" class="w-full p-3 border rounded-lg text-lg" style="border-color: var(--color-border);" placeholder="例：猫が魚を食べる">
+                    <select id="target-lang-select" class="p-3 border rounded-lg text-lg" style="border-color: var(--color-border); background-color: white;">
+                        <option value="English">英語</option>
+                        <option value="Latin">ラテン語</option>
+                    </select>
+                 </div>
+                 <div class="text-center mt-4">
+                    <button id="cross-lingual-btn" class="gemini-button">
+                        <i class="fas fa-exchange-alt"></i> 翻訳して統語構造を比較する
+                    </button>
+                </div>
+            </div>
+            <div id="cross-lingual-result" class="mt-6"></div>
+        </div>
+
 
         <div class="slide">
              <h2>まとめと質疑応答</h2>
              <div class="card">
                 <h3>本日のまとめ</h3>
                  <ul class="list-disc list-inside space-y-2">
-                     <li>UDは、言語の壁を越えて文法構造を比較できる<strong>共通の物差し</strong>である。</li>
-                     <li>統語樹は、単語間の<strong>依存関係</strong>を可視化したものである。</li>
-                     <li><strong>無料のツール</strong>を使えば、誰でもすぐに言語分析を始められる。</li>
-                     <li><strong>生成AI</strong>を組み合わせることで、研究の着想を得たり、分析を深めたりできる。</li>
+                     <li>UDは、言語の壁を越えて文法構造を比較できる<strong>共通の物差し</strong>です。</li>
+                     <li>統語樹は、単語間の<strong>依存関係</strong>を可視化します。</li>
+                     <li><strong>無料のツール</strong>と<strong>生成AI</strong>を組み合わせることで、誰でも高度な言語分析を始められます。</li>
                  </ul>
             </div>
             <div class="text-center mt-12">
-                 <h1 style="color:var(--primary-color)">ご清聴ありがとうございました</h1>
+                 <h1 style="color:var(--color-primary)">ご清聴ありがとうございました</h1>
                  <p class="text-2xl">ご質問をお待ちしております。</p>
             </div>
         </div>
@@ -565,27 +599,32 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- DOM Elements ---
-            const slides = document.querySelectorAll('.slide');
+            const slides = Array.from(document.querySelectorAll('.slide'));
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
-            const currentSlideNum = document.getElementById('current-slide-num');
-            const totalSlidesNum = document.getElementById('total-slides-num');
+            const currentNumEl = document.getElementById('current-slide-num');
+            const totalNumEl = document.getElementById('total-slides-num');
             const progressFill = document.getElementById('progress-fill');
-            
             const generateTopicsBtn = document.getElementById('generate-topics-btn');
             const topicsContainer = document.getElementById('research-topics-container');
             const topicsLoader = document.getElementById('topics-loader');
-            
             const analyzeSentenceBtn = document.getElementById('analyze-sentence-btn');
             const sentenceInput = document.getElementById('sentence-input');
             const analysisResult = document.getElementById('analysis-result');
+            const crossLingualBtn = document.getElementById('cross-lingual-btn');
+            const crossLingualInput = document.getElementById('cross-lingual-input');
+            const targetLangSelect = document.getElementById('target-lang-select');
+            const crossLingualResult = document.getElementById('cross-lingual-result');
             
-            let currentSlide = 0;
-            totalSlidesNum.textContent = slides.length;
+            const geminiApiKeyName = 'gemini-api-key';
+            let current = 0;
+            totalNumEl.textContent = slides.length;
 
             const callGemini = async (prompt) => {
-                const apiKey = ""; // Provided by the environment
+                const apiKey = localStorage.getItem(geminiApiKeyName);
+                if (!apiKey) {
+                    return JSON.stringify({ error: "Gemini APIキーが設定されていません。" });
+                }
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
                 const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
                 try {
@@ -595,21 +634,48 @@
                     if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts) {
                         return result.candidates[0].content.parts[0].text;
                     }
-                    console.warn("Gemini API response was empty or blocked.", result);
-                    return '{"error": "AIからの応答がありませんでした。不適切なコンテンツの可能性があります。"}';
+                    return JSON.stringify({ error: "AIからの応答がありませんでした。" });
                 } catch (error) {
-                    console.error("Error calling Gemini API:", error);
-                    return `{"error": "AIとの通信中にエラーが発生しました: ${error.message}"}`;
+                    return JSON.stringify({ error: `AIとの通信中にエラーが発生しました: ${error.message}`});
+                }
+            };
+
+            const saveApiKey = (event) => {
+                const input = event.target.closest('div').querySelector('.api-key-input');
+                const key = input.value.trim();
+                 if (key) {
+                    localStorage.setItem(geminiApiKeyName, key);
+                    checkAndSetupApi();
+                } else {
+                    alert('APIキーを入力してください。');
+                }
+            };
+
+            const checkAndSetupApi = () => {
+                const apiKey = localStorage.getItem(geminiApiKeyName);
+                const aiButtons = [generateTopicsBtn, analyzeSentenceBtn, crossLingualBtn];
+                const setupDivs = [document.getElementById('api-key-setup-1'), document.getElementById('api-key-setup-2'), document.getElementById('api-key-setup-3')];
+
+                if (apiKey) {
+                    aiButtons.forEach(btn => { if(btn) btn.disabled = false; });
+                    setupDivs.forEach(div => { if(div) div.style.display = 'none'; });
+                } else {
+                    aiButtons.forEach(btn => { if(btn) btn.disabled = true; });
+                    setupDivs.forEach(div => { if(div) div.style.display = 'block'; });
                 }
             };
             
+            document.querySelectorAll('.save-api-key-btn').forEach(button => button.addEventListener('click', saveApiKey));
+
             generateTopicsBtn.addEventListener('click', async () => {
                 generateTopicsBtn.disabled = true;
                 topicsLoader.style.display = 'block';
-                const prompt = 'あなたは言語学の教授です。Universal Dependencies (UD) を活用した、斬新で面白い研究テーマを3つ提案してください。テーマは箇条書きで、それぞれに簡単な説明を加えてください。';
+                const prompt = 'あなたは言語学の教授です。Universal Dependencies (UD) を活用した、高校生や大学生でも探求できるような、斬新で面白い研究テーマを2つ提案してください。テーマは箇条書きで、それぞれに簡単な説明を加えてください。';
                 const resultText = await callGemini(prompt);
+                
                 topicsContainer.innerHTML = '';
-                const topics = resultText.split(/\n\s*\*\s*/).filter(t => t && t.trim());
+                const topics = resultText.split(/\n\s*[\*|-]\s*/).filter(t => t && t.trim());
+                
                 topics.forEach(topic => {
                     const card = document.createElement('div');
                     card.className = 'card';
@@ -618,6 +684,7 @@
                     card.innerHTML = titleMatch ? '<h3 class="text-xl">' + titleMatch[1] + '</h3><p>' + cleanedTopic.substring(titleMatch[0].length).trim() + '</p>' : '<p>' + cleanedTopic + '</p>';
                     topicsContainer.appendChild(card);
                 });
+                
                 generateTopicsBtn.disabled = false;
                 topicsLoader.style.display = 'none';
             });
@@ -631,82 +698,120 @@
                 analyzeSentenceBtn.disabled = true;
                 analysisResult.innerHTML = '<div class="text-center">AIが分析・描画中です...</div>';
                 
-                const prompt = `あなたは、日本語の統語構造を分析し、その結果を解説とSVG形式の統語樹で出力する専門家です。
-                以下の日本語の文を分析し、指定されたJSON形式で応答してください。
-
-                # 指示
-                - 文: "${sentence}"
-                - 応答はJSON形式のみとし、マークダウンのコードブロックは含めないでください。
-                - JSONには "analysis" と "svg" の2つのキーを含めてください。
-                - "analysis" の値には、文の構造分析を格納してください（root, nsubj, obj, explanation）。
-                - "svg" の値には、統語樹を描画するSVGコードを文字列として格納してください。
-                - SVGの単語は y=150 に配置し、x座標は100から初めて、単語ごとに120ずつ増やしてください。
-                - 依存関係の矢印は、始点と終点の中間点を制御点とする二次ベジェ曲線（Q）で描画してください。
-
-                # JSON出力形式の例
+                const prompt = `あなたは日本語の統語構造の専門家です。文「${sentence}」を分析し、以下のJSON形式で応答してください。
                 {
-                  "analysis": {
-                    "root": "食べる",
-                    "nsubj": "猫",
-                    "obj": "魚",
-                    "explanation": "「食べる」を文の核として、「猫が」がその主語、「魚を」が目的語となる基本的な構造です。"
-                  },
-                  "svg": "<svg class='dependency-tree' viewBox='0 0 500 200'><defs><marker id='ai-arrow' viewBox='0 0 10 10' refX='8' refY='5' markerWidth='6' markerHeight='6' orient='auto-start-reverse'><path d='M 0 0 L 10 5 L 0 10 z' fill='#3b82f6'/></marker></defs><text x='100' y='150' class='dep-word' text-anchor='middle'>猫</text><text x='220' y='150' class='dep-word' text-anchor='middle'>が</text><text x='340' y='150' class='dep-word' text-anchor='middle'>魚</text><text x='460' y='150' class='dep-word' text-anchor='middle'>を</text><text x='580' y='150' class='dep-word' text-anchor='middle'>食べる</text><path d='M 100 135 Q 340 50 570 135' class='dep-arrow' stroke='#3b82f6' marker-end='url(#ai-arrow)'/><text x='340' y='70' class='dep-label' fill='#3b82f6'>nsubj</text><path d='M 340 135 Q 460 80 570 135' class='dep-arrow' stroke='#10b981' marker-end='url(#ai-arrow)'/><text x='460' y='100' class='dep-label' fill='#10b981'>obj</text></svg>"
+                  "analysis": { "explanation": "この文の構造に関する50字程度の解説" },
+                  "svg": "統語樹のSVGコード文字列。viewBox='0 0 単語数*120 200' とし、各単語のx座標は 100, 220, 340... としてください。依存関係のpathとtextには、役割に応じたクラス（dep-nsubj, dep-obj, dep-mod, dep-caseとdep-nsubj-label, dep-obj-labelなど）とmarker-end属性を必ず付けてください。"
                 }`;
 
                 const resultText = await callGemini(prompt);
                 
                 try {
-                    const result = JSON.parse(resultText);
+                    const result = JSON.parse(resultText.replace(/^```json\n?/, '').replace(/```$/, '').trim());
                     if (result.error) throw new Error(result.error);
                     
                     const { analysis, svg } = result;
-                    let htmlOutput = '<div class="tree-container">' +
+                    const html = '<div class="tree-container">' +
                         '<h3 class="text-xl">AIによる構文分析結果</h3>' +
-                        '<div id="ai-svg-container" class="my-4">' + (svg || '<p>SVGの生成に失敗しました。</p>') + '</div>' +
-                        '<p><strong>入力文:</strong> ' + sentence + '</p>' +
-                        '<ul class="list-disc list-inside mt-4 space-y-2">' +
-                        '<li><strong>核 (root):</strong> ' + (analysis.root || '不明') + '</li>' +
-                        '<li><strong>主語 (nsubj):</strong> ' + (analysis.nsubj || '不明') + '</li>' +
-                        '<li><strong>目的語 (obj):</strong> ' + (analysis.obj || '不明') + '</li>' +
-                        '</ul>' +
-                        '<div class="highlight-card mt-4">' +
+                        (svg || '<p>SVGの生成に失敗しました。</p>') +
+                        '<div class="highlight-card mt-6">' +
                         '<p><strong>AIによる解説:</strong> ' + (analysis.explanation || '解説を生成できませんでした。') + '</p>' +
                         '</div>' +
                         '</div>';
-                    analysisResult.innerHTML = htmlOutput;
+                    analysisResult.innerHTML = html;
                 } catch (e) {
-                    console.error("Failed to parse Gemini response:", e);
-                    analysisResult.innerHTML = '<div class="tree-container">' +
-                       '<h3 class="text-red-500">分析エラー</h3>' +
-                       '<p>AIからの応答を解析できませんでした。AIの応答は以下の通りです：</p>' +
-                       '<p class="mt-2 p-2 bg-gray-100 rounded" style="white-space: pre-wrap; word-break: break-all;">' + resultText + '</p>' +
-                       '</div>';
+                    analysisResult.innerHTML = '<div class="card" style="border-color:red;"><h3 class="text-red-500">分析エラー</h3><p>AIからの応答を解析できませんでした。</p><pre style="white-space:pre-wrap; word-break:break-all; background:#eee; padding:1rem; border-radius:8px;">' + resultText + '</pre></div>';
                 }
                 
                 analyzeSentenceBtn.disabled = false;
             });
 
-            // --- Slide Navigation ---
+            crossLingualBtn.addEventListener('click', async () => {
+                const sentence = crossLingualInput.value.trim();
+                if (!sentence) {
+                    crossLingualResult.innerHTML = '<p class="text-red-500">分析する日本語の文章を入力してください。</p>';
+                    return;
+                }
+                const targetLang = targetLangSelect.value;
+
+                crossLingualBtn.disabled = true;
+                crossLingualResult.innerHTML = '<div class="text-center">AIが翻訳・分析・描画中です...</div>';
+
+                const prompt = `
+                    あなたは多言語の統語構造に詳しい専門家です。
+                    以下の日本語の文を、指定されたターゲット言語に翻訳し、両方の文の統語構造を分析してください。
+                    応答はJSON形式のみとし、マークダウンのコードブロックは含めないでください。
+
+                    # 指示
+                    - 日本語の文: "${sentence}"
+                    - ターゲット言語: ${targetLang}
+                    - 応答JSONは "original" と "translated" の2つのキーを持つこと。
+                    - 各キーの値は、文（sentence）、解説（explanation）、統語樹SVG（svg）を含むオブジェクトとすること。
+                    - SVGは適切に色分けされたクラスとmarker-end属性を適用すること。
+
+                    # JSON出力形式
+                    {
+                      "original": {
+                        "sentence": "元の日本語文",
+                        "explanation": "日本語文の構造解説",
+                        "svg": "<svg>...</svg>"
+                      },
+                      "translated": {
+                        "sentence": "翻訳された文",
+                        "explanation": "翻訳された文の構造解説",
+                        "svg": "<svg>...</svg>"
+                      }
+                    }
+                `;
+
+                const resultText = await callGemini(prompt);
+
+                 try {
+                    const result = JSON.parse(resultText.replace(/^```json\n?/, '').replace(/```$/, '').trim());
+                    if (result.error) throw new Error(result.error);
+                    
+                    const { original, translated } = result;
+                    const html = '<div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">' +
+                        '<div class="tree-container">' +
+                            '<h3>日本語（原文）</h3>' +
+                            '<p class="text-center font-bold">' + (original.sentence || "") + '</p>' +
+                            (original.svg || '<p>SVGの生成に失敗</p>') +
+                            '<p style="font-size:1rem;">' + (original.explanation || "") + '</p>' +
+                        '</div>' +
+                        '<div class="tree-container">' +
+                            '<h3>' + targetLang + '（翻訳）</h3>' +
+                            '<p class="text-center font-bold">' + (translated.sentence || "") + '</p>' +
+                            (translated.svg || '<p>SVGの生成に失敗</p>') +
+                            '<p style="font-size:1rem;">' + (translated.explanation || "") + '</p>' +
+                        '</div>' +
+                    '</div>';
+                    crossLingualResult.innerHTML = html;
+                } catch (e) {
+                    crossLingualResult.innerHTML = '<div class="card" style="border-color:red;"><h3 class="text-red-500">分析エラー</h3><p>AIからの応答を解析できませんでした。</p><pre style="white-space:pre-wrap; word-break:break-all; background:#eee; padding:1rem; border-radius:8px;">' + resultText + '</pre></div>';
+                }
+
+                crossLingualBtn.disabled = false;
+            });
+
             const showSlide = (index) => {
                 slides.forEach((slide, i) => {
                     slide.classList.remove('active', 'prev-slide');
                     if (i === index) slide.classList.add('active');
                     else if (i < index) slide.classList.add('prev-slide');
                 });
-                currentSlide = index;
+                current = index;
                 updateUI();
             };
 
             const updateUI = () => {
-                currentSlideNum.textContent = currentSlide + 1;
-                progressFill.style.width = `${((currentSlide + 1) / slides.length) * 100}%`;
-                prevBtn.disabled = currentSlide === 0;
-                nextBtn.disabled = currentSlide === slides.length - 1;
+                currentNumEl.textContent = current + 1;
+                progressFill.style.width = `${((current + 1) / slides.length) * 100}%`;
+                prevBtn.disabled = current === 0;
+                nextBtn.disabled = current === slides.length - 1;
             };
 
-            const next = () => { if (currentSlide < slides.length - 1) showSlide(currentSlide + 1); };
-            const prev = () => { if (currentSlide > 0) showSlide(currentSlide - 1); };
+            const next = () => { if (current < slides.length - 1) showSlide(current + 1); };
+            const prev = () => { if (current > 0) showSlide(current - 1); };
 
             nextBtn.addEventListener('click', next);
             prevBtn.addEventListener('click', prev);
@@ -715,6 +820,7 @@
                 if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); next(); } 
                 else if (e.key === 'ArrowLeft') { e.preventDefault(); prev(); }
             });
+            checkAndSetupApi();
             showSlide(0);
         });
     </script>
