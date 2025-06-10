@@ -242,13 +242,15 @@
                 <ol class="space-y-3 text-lg" style="list-style: none; padding-left: 0;">
                     <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">1.</span>UDとは何か：統語樹の紹介</li>
                     <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">2.</span>UDの構成要素と応用</li>
-                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">3.</span>統語樹の実例（日本語）</li>
-                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">4.</span>統語樹の実例（多言語比較）</li>
-                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">5.</span>研究例：危機言語と古代言語</li>
-                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">6.</span>便利なツール</li>
-                    <li><span style="color:var(--color-secondary); margin-right: 1rem; font-weight:bold;">7.</span><strong style="color:var(--color-text-primary)">AIと創る研究テーマ</strong></li>
-                    <li><span style="color:var(--color-secondary); margin-right: 1rem; font-weight:bold;">8.</span><strong style="color:var(--color-text-primary)">AI構文分析ラボ</strong></li>
-                    <li><span style="color:var(--color-secondary); margin-right: 1rem; font-weight:bold;">9.</span><strong style="color:var(--color-text-primary)">AI言語横断ラボ</strong></li>
+                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">3.</span>言語の形：形態論的類型論</li>
+                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">4.</span>世界の語順：基本語順類型論</li>
+                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">5.</span>統語樹の実例（日本語）</li>
+                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">6.</span>統語樹の実例（多言語比較）</li>
+                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">7.</span>研究例：危機言語と古代言語</li>
+                    <li><span style="color:var(--color-primary); margin-right: 1rem; font-weight:bold;">8.</span>便利なツール</li>
+                    <li><span style="color:var(--color-secondary); margin-right: 1rem; font-weight:bold;">9.</span><strong style="color:var(--color-text-primary)">AIと創る研究テーマ</strong></li>
+                    <li><span style="color:var(--color-secondary); margin-right: 1rem; font-weight:bold;">10.</span><strong style="color:var(--color-text-primary)">AI構文分析ラボ</strong></li>
+                    <li><span style="color:var(--color-secondary); margin-right: 1rem; font-weight:bold;">11.</span><strong style="color:var(--color-text-primary)">AI言語横断ラボ</strong></li>
                 </ol>
             </div>
         </div>
@@ -283,73 +285,91 @@
                 <h3>UDの3つの柱</h3>
                 <p>UDは、主に「品詞タグ」「依存関係ラベル」「CoNLL-Uフォーマット」の3つの要素で構成されています。これらが世界共通の基準として機能することで、多様な言語の分析が可能になります。</p>
             </div>
-             <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
-                 <div class="card">
-                    <h3><i class="fas fa-tags" style="color: var(--color-primary);"></i> 品詞 (POS)</h3>
-                    <p><code>NOUN</code>(名詞)や<code>VERB</code>(動詞)など、全言語共通の17種類のタグで単語を分類します。</p>
+        </div>
+        
+        <div class="slide">
+            <h2>3. 言語の形：形態論的類型論</h2>
+            <p>言語は、単語が文法的な意味をどのように表現するかによって、いくつかのタイプに分類できます。</p>
+             <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; align-items: start;">
+                <div class="card">
+                    <h3>孤立語 (Isolating)</h3>
+                    <p>各単語がそれぞれ独立した意味を持ち、語形変化がほとんどない。例：中国語「我爱你」(wǒ ài nǐ) は「私・愛する・あなた」のように単語がそのまま並びます。</p>
                 </div>
                  <div class="card">
-                    <h3><i class="fas fa-project-diagram" style="color: var(--color-success);"></i> 依存関係 (DepRel)</h3>
-                    <p><code>nsubj</code>(主語)や<code>obj</code>(目的語)など、単語間の文法的な関係性を示します。</p>
+                    <h3>膠着語 (Agglutinative)</h3>
+                    <p>単語の語幹に、特定の機能を持つ接辞が次々と「糊で貼り付けるように」付いていく。例：日本語「食べさせられた」は「食べ-させ-られ-た」と分解できます。</p>
                 </div>
                  <div class="card">
-                    <h3><i class="fas fa-file-alt" style="color: var(--color-secondary);"></i> CoNLL-U形式</h3>
-                    <p>上記の文法情報をテキストで記録するための標準フォーマットです。</p>
+                    <h3>屈折語 (Inflectional)</h3>
+                    <p>単語の語尾などが変化（屈折）することで、格（文における役割）、数（単数/複数）といった複数の文法情報を同時に表現します。</p>
                 </div>
+            </div>
+            <div class="tree-container">
+                <h3>屈折語の例：ラテン語の名詞 <i>rosa</i> (バラ) の格変化</h3>
+                <p>同じ「バラ」という単語でも、文中での役割（「バラが」「バラの」など）によって、以下のように語尾が変化します。</p>
+                <table class="styled-table">
+                    <thead>
+                        <tr>
+                            <th>格 (Case)</th>
+                            <th>単数 (Singular)</th>
+                            <th>複数 (Plural)</th>
+                            <th>機能の例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>主格 (Nominative)</td>
+                            <td>ros<b>a</b></td>
+                            <td>ros<b>ae</b></td>
+                            <td>バラ<b>が</b> (主語)</td>
+                        </tr>
+                        <tr>
+                            <td>属格 (Genitive)</td>
+                            <td>ros<b>ae</b></td>
+                            <td>ros<b>ārum</b></td>
+                            <td>バラ<b>の</b> (所有)</td>
+                        </tr>
+                        <tr>
+                            <td>与格 (Dative)</td>
+                            <td>ros<b>ae</b></td>
+                            <td>ros<b>īs</b></td>
+                            <td>バラ<b>に</b> (間接目的語)</td>
+                        </tr>
+                        <tr>
+                            <td>対格 (Accusative)</td>
+                            <td>ros<b>am</b></td>
+                            <td>ros<b>ās</b></td>
+                            <td>バラ<b>を</b> (直接目的語)</td>
+                        </tr>
+                        <tr>
+                            <td>奪格 (Ablative)</td>
+                            <td>ros<b>ā</b></td>
+                            <td>ros<b>īs</b></td>
+                            <td>バラ<b>によって</b> (手段・場所など)</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
         
         <div class="slide">
-            <h2>3. UDの応用：言語類型論</h2>
-            <div class="card">
-                <h3>大規模データで言語の「法則」を探る</h3>
-                <p>UDの大規模なデータセットを利用することで、これまで手作業では難しかった、世界中の言語に共通する法則（言語普遍性）や傾向を統計的に分析できます。</p>
-                <ul class="list-disc list-inside">
-                    <li><strong>基本語順の調査：</strong>「主語(S)・動詞(V)・目的語(O)」の語順が、どの言語で、どのくらいの頻度で見られるか（例：SOV型、SVO型）を大規模に集計し、新たな法則性を発見する。</li>
-                    <li><strong>主辞と従属要素の関係：</strong>前置詞を使う言語と後置詞を使う言語の分布や、助動詞の位置など、より詳細な文法パターンの比較が可能になる。</li>
-                </ul>
-                <p class="mt-4">UDは、言語学者がより確かなデータに基づいて、言語の多様性と普遍性について議論するための強力な武器となります。</p>
+            <h2>4. 世界の語順：基本語順類型論</h2>
+            <p>文の主要な要素である主語(S)、目的語(O)、動詞(V)がどのような順番で現れるかは、言語の大きな特徴の一つです。</p>
+             <div class="card">
+                <h3>代表的な語順</h3>
+                 <ul class="list-disc list-inside">
+                     <li><b>SOV (主語-目的語-動詞):</b> 「猫が 魚を 食べる」 (日本語、韓国語、トルコ語など) - <b style="color:var(--color-primary)">約45%</b></li>
+                     <li><b>SVO (主語-動詞-目的語):</b> 「猫は 食べる 魚を」 (英語、中国語、フランス語など) - <b style="color:var(--color-success)">約42%</b></li>
+                     <li><b>VSO (動詞-主語-目的語):</b> 「食べる 猫は 魚を」 (アラビア語、アイルランド語など) - <b style="color:var(--color-secondary)">約9%</b></li>
+                     <li><b>VOS (動詞-目的語-主語):</b> 「食べる 魚を 猫は」 (マダガスカル語など) - <b style="color:var(--color-danger)">約3%</b></li>
+                     <li>その他の語順 (OVS, OSV) はさらに稀です。</li>
+                 </ul>
             </div>
-        </div>
-
-        <div class="slide">
-            <h2>3. UDの応用：特定の文法現象の分析</h2>
-            <div class="card">
-                <h3>異なる言語の「同じ機能」を比べる</h3>
-                <p>UDは、言語によって表現方法が全く異なる文法現象でも、その「機能」が同じであれば、共通のラベルで分析することを可能にします。</p>
-                <div class="grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
-                    <div>
-                        <h4>格表示 (Case Marking)</h4>
-                        <p style="font-size: 1.1rem;">日本語の助詞「が」も、ラテン語の名詞の語形変化（屈折）も、UDではどちらも名詞が文中で果たす役割（主語など）を示すための仕組みとして、統一的に分析できます。</p>
-                    </div>
-                     <div>
-                        <h4>関係節 (Relative Clauses)</h4>
-                        <p style="font-size: 1.1rem;">日本語の「猫が食べた魚」と英語の "the fish that the cat ate" は、語順も構造も異なりますが、どちらも「魚」という名詞を修飾する節として、<code>acl</code>（連体修飾節）という共通のラベルで捉えることができます。</p>
-                    </div>
-                </div>
-            </div>
+            <p>UDのデータを使えば、こうした語順の地理的な分布や、言語間の関係を大規模に調査することができます。</p>
         </div>
         
-         <div class="slide">
-            <h2>3. UDの応用：自然言語処理（AI技術）</h2>
-             <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
-                 <div class="card">
-                    <h3><i class="fas fa-language" style="color: var(--color-primary);"></i> 機械翻訳</h3>
-                    <p>UDで文の骨格（主語・目的語など）を捉えることで、特に語順が大きく異なる言語間（例：日本語と英語）の翻訳精度が向上します。</p>
-                </div>
-                 <div class="card">
-                    <h3><i class="fas fa-search" style="color: var(--color-success);"></i> 情報抽出</h3>
-                    <p>ニュース記事から「誰が、何を、どうした」という情報を自動で抜き出す際に、UDの依存関係が重要な手がかりになります。</p>
-                </div>
-                 <div class="card">
-                    <h3><i class="fas fa-robot" style="color: var(--color-secondary);"></i> 対話システム</h3>
-                    <p>ユーザーの発言の意図を正確に理解するために、文の構造情報が利用されます。これにより、より自然な対話が可能になります。</p>
-                </div>
-            </div>
-        </div>
-
         <div class="slide">
-            <h2>4. 統語樹の実例（日本語）</h2>
+            <h2>5. 統語樹の実例（日本語）</h2>
             <div class="tree-container">
                 <h3>他動詞: 「私は本を読む」</h3>
                  <svg class="dependency-tree" viewBox="0 0 500 220">
@@ -378,76 +398,37 @@
         </div>
         
         <div class="slide">
-            <h2>5. 統語樹の実例（多言語比較）</h2>
+            <h2>6. 統語樹の実例（多言語比較）</h2>
             <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
                 <div class="tree-container">
-                    <h3>英語 (SVO)</h3>
-                    <p class="text-center font-bold">I love you</p>
-                    <svg class="dependency-tree" style="height:150px" viewBox="0 0 400 200">
-                        <text x="80" y="120" class="dep-word" text-anchor="middle">I</text>
-                        <text x="200" y="120" class="dep-word" text-anchor="middle">love</text>
-                        <text x="320" y="120" class="dep-word" text-anchor="middle">you</text>
-                        <path d="M 80 105 Q 140 50 190 105" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/>
-                        <text x="140" y="70" class="dep-label dep-nsubj-label" text-anchor="middle">nsubj</text>
-                        <path d="M 320 105 Q 260 50 210 105" class="dep-arrow dep-obj" marker-end="url(#arrow-obj)"/>
-                        <text x="260" y="70" class="dep-label dep-obj-label" text-anchor="middle">obj</text>
+                    <h3>VOS言語：マダガスカル語</h3>
+                    <p class="text-center font-bold">Mividy ny vary ny vehivavy.</p>
+                    <p class="text-center text-sm text-slate-500">（その女性は米を買う）</p>
+                    <svg class="dependency-tree" style="height:180px" viewBox="0 0 600 220">
+                        <text x="100" y="150" class="dep-word">Mividy</text>
+                        <text x="250" y="150" class="dep-word">ny vary</text>
+                        <text x="450" y="150" class="dep-word">ny vehivavy</text>
+                        <path d="M 250 135 Q 175 70 110 135" class="dep-arrow dep-obj" marker-end="url(#arrow-obj)"/><text x="175" y="90" class="dep-label dep-obj-label">obj</text>
+                        <path d="M 450 135 Q 275 30 110 135" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/><text x="275" y="60" class="dep-label dep-nsubj-label">nsubj</text>
                     </svg>
                 </div>
                 <div class="tree-container">
-                    <h3>アラビア語 (VSO)</h3>
-                    <p class="text-center font-bold" dir="rtl">قرأ الطالب الكتاب</p>
-                     <svg class="dependency-tree" style="height:150px" viewBox="0 0 400 200">
-                        <text x="320" y="120" class="dep-word" text-anchor="middle">قرأ</text>
-                        <text x="200" y="120" class="dep-word" text-anchor="middle">الطالب</text>
-                        <text x="80" y="120" class="dep-word" text-anchor="middle">الكتاب</text>
-                        <path d="M 200 105 Q 260 50 310 105" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/>
-                        <text x="260" y="70" class="dep-label dep-nsubj-label" text-anchor="middle">nsubj</text>
-                        <path d="M 80 105 Q 200 50 310 105" class="dep-arrow dep-obj" marker-end="url(#arrow-obj)"/>
-                        <text x="180" y="70" class="dep-label dep-obj-label" text-anchor="middle">obj</text>
-                    </svg>
-                </div>
-            </div>
-        </div>
-        
-        <div class="slide">
-            <h2>5. 統語樹の実例（ラテン語の自由な語順）</h2>
-            <p>ラテン語は格変化により単語の文法的な役割が示されるため、語順を比較的自由に変えることができます。しかし、どの語順でも統語的な関係（依存関係）は変わりません。</p>
-            <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 1.5rem;">
-                <div class="tree-container">
-                    <h3>SOV: <span class="font-normal">Puella rosam amat.</span></h3>
-                    <svg class="dependency-tree" style="height:150px" viewBox="0 0 500 200">
-                        <text x="100" y="130" class="dep-word">Puella</text><text x="100" y="150" class="dep-pos">少女</text>
-                        <text x="250" y="130" class="dep-word">rosam</text><text x="250" y="150" class="dep-pos">バラ</text>
-                        <text x="400" y="130" class="dep-word">amat</text><text x="400" y="150" class="dep-pos">愛する</text>
+                    <h3>ラテン語 (自由語順)</h3>
+                    <p class="text-center font-bold">Puella rosam amat.</p>
+                    <p class="text-center text-sm text-slate-500">（少女はバラを愛する）</p>
+                    <svg class="dependency-tree" style="height:180px" viewBox="0 0 500 220">
+                        <text x="100" y="130" class="dep-word">Puella</text>
+                        <text x="250" y="130" class="dep-word">rosam</text>
+                        <text x="400" y="130" class="dep-word">amat</text>
                         <path d="M 100 115 Q 250 40 390 115" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/><text x="250" y="65" class="dep-label dep-nsubj-label">nsubj</text>
                         <path d="M 250 115 Q 325 70 390 115" class="dep-arrow dep-obj" marker-end="url(#arrow-obj)"/><text x="325" y="90" class="dep-label dep-obj-label">obj</text>
-                    </svg>
-                </div>
-                <div class="tree-container">
-                    <h3>SVO: <span class="font-normal">Puella amat rosam.</span></h3>
-                     <svg class="dependency-tree" style="height:150px" viewBox="0 0 500 200">
-                        <text x="100" y="130" class="dep-word">Puella</text><text x="100" y="150" class="dep-pos">少女</text>
-                        <text x="250" y="130" class="dep-word">amat</text><text x="250" y="150" class="dep-pos">愛する</text>
-                        <text x="400" y="130" class="dep-word">rosam</text><text x="400" y="150" class="dep-pos">バラ</text>
-                        <path d="M 100 115 Q 175 70 240 115" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/><text x="175" y="90" class="dep-label dep-nsubj-label">nsubj</text>
-                        <path d="M 400 115 Q 325 70 260 115" class="dep-arrow dep-obj" marker-end="url(#arrow-obj)"/><text x="325" y="90" class="dep-label dep-obj-label">obj</text>
-                    </svg>
-                </div>
-                 <div class="tree-container">
-                    <h3>OVS: <span class="font-normal">Rosam amat puella.</span></h3>
-                    <svg class="dependency-tree" style="height:150px" viewBox="0 0 500 200">
-                        <text x="100" y="130" class="dep-word">Rosam</text><text x="100" y="150" class="dep-pos">バラ</text>
-                        <text x="250" y="130" class="dep-word">amat</text><text x="250" y="150" class="dep-pos">愛する</text>
-                        <text x="400" y="130" class="dep-word">puella</text><text x="400" y="150" class="dep-pos">少女</text>
-                        <path d="M 100 115 Q 175 70 240 115" class="dep-arrow dep-obj" marker-end="url(#arrow-obj)"/><text x="175" y="90" class="dep-label dep-obj-label">obj</text>
-                        <path d="M 400 115 Q 325 70 260 115" class="dep-arrow dep-nsubj" marker-end="url(#arrow-nsubj)"/><text x="325" y="90" class="dep-label dep-nsubj-label">nsubj</text>
                     </svg>
                 </div>
             </div>
         </div>
 
         <div class="slide">
-            <h2>6. 研究例：危機言語と古代言語</h2>
+            <h2>7. 研究例：危機言語と古代言語</h2>
             <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
                 <div class="tree-container">
                     <h3>危機言語: 沖縄語</h3>
@@ -479,7 +460,7 @@
         </div>
         
         <div class="slide">
-            <h2>7. 便利なツール</h2>
+            <h2>8. 便利なツール</h2>
             <p>これらのツールはすべて無料で、ブラウザから直接利用できます。プログラミングの知識は必要ありません。</p>
             <div class="grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem;">
                 <div class="card" style="text-align: center;">
@@ -504,7 +485,7 @@
         </div>
 
         <div class="slide">
-            <h2>8. AIと創る研究テーマ</h2>
+            <h2>9. AIと創る研究テーマ</h2>
             <p>あなたの興味をAIに伝え、新しい研究の種を見つけましょう。</p>
             <div id="api-key-setup-1" class="card" style="display: none; border-color: var(--color-accent);">
                 <h3 style="color: var(--color-accent);">AI機能の利用にはAPIキーが必要です</h3>
@@ -516,7 +497,7 @@
                 <p style="font-size: 0.9rem; margin-top: 1rem;">APIキーは<a href="https://aistudio.google.com/app/apikey" target="_blank" style="color: var(--color-primary); text-decoration: underline;">Google AI Studio</a>から無料で取得できます。入力されたキーはブラウザのローカルストレージにのみ保存されます。</p>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="research-topics-container">
-                 <div class="card"><h3 class="text-xl">📱 SNS・若者言葉の分析</h3><p>「てぇてぇ」「○○しか勝たん」など、新しい表現の構造を分析する。</p></div>
+                 <div class="card"><h3 class="text-xl">📱 SNSの言葉遣い</h3><p>「それな」「マジ卍」といった流行語が、文中でどのような文法的な役割を担っているかを分析する。</p></div>
                  <div class="card"><h3 class="text-xl">🎮 ゲーム・アニメのキャラ言語</h3><p>特定のキャラクターの口癖や話し方の統語的な特徴を明らかにする。</p></div>
             </div>
             <div class="text-center mt-8">
@@ -528,7 +509,7 @@
         </div>
         
         <div class="slide">
-            <h2>9. AI構文分析ラボ</h2>
+            <h2>10. AI構文分析ラボ</h2>
              <div id="api-key-setup-2" class="card" style="display: none; border-color: var(--color-accent);">
                 <h3 style="color: var(--color-accent);">AI機能の利用にはAPIキーが必要です</h3>
                 <p style="font-size:1rem;">このAI機能はGoogleのGemini APIを使用しています。GitHub Pages等で機能を有効にするには、ご自身のAPIキーを入力してください。</p>
@@ -551,7 +532,7 @@
         </div>
         
         <div class="slide">
-            <h2>10. AI言語横断ラボ</h2>
+            <h2>11. AI言語横断ラボ</h2>
              <div id="api-key-setup-3" class="card" style="display: none; border-color: var(--color-accent);">
                 <h3 style="color: var(--color-accent);">AI機能の利用にはAPIキーが必要です</h3>
                 <p style="font-size:1rem;">このAI機能はGoogleのGemini APIを使用しています。GitHub Pages等で機能を有効にするには、ご自身のAPIキーを入力してください。</p>
